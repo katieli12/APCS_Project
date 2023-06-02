@@ -27,7 +27,7 @@ midFrame = Frame(window)
 midFrame.pack(side='left', fill='both')
 
 rightFrame=Frame(window)
-rightFrame.pack(side='left', fill='both', expand=1)
+rightFrame.pack(side='left', expand=1)
 
 #in the left frame
 time_signatures = {1: [' 2 / 4', (2, 4)], 2: [' 3 / 4',(3 ,4)], 3: [' 4 / 4',(4, 4)], 4: [' 2 / 2',(2, 2)],
@@ -36,12 +36,11 @@ time_signatures = {1: [' 2 / 4', (2, 4)], 2: [' 3 / 4',(3 ,4)], 3: [' 4 / 4',(4,
 
 ts_mode = tk.IntVar(leftFrame)
 for mode in time_signatures.keys():
-    radio_button = tk.Radiobutton(leftFrame, text = time_signatures[mode][0], variable = ts_mode,
-                    value = mode, fg=theme_colors['text'],
-                    bg=theme_colors['bg'], anchor='w', font=(theme_fonts[0], 17))
+    check_button = tk.Checkbutton(leftFrame, text = time_signatures[mode][0], variable = ts_mode, onvalue = mode, 
+    fg=theme_colors['text'], bg=theme_colors['bg'], font=(theme_fonts[0], 17), selectcolor = theme_colors['label_bg'], pady = 11) 
     if time_signatures[mode][-1] == (4, 4): 
-        radio_button.select()
-    radio_button.pack(fill='x')
+        check_button.select()
+    check_button.pack(fill='x')
 
 #in the middle frame
 #tempo label
@@ -77,28 +76,17 @@ def update(*args):
     marking = tempo_marking_of(tempo)
     marking_label['text'] = '{}'.format(marking)
 
-scale = tk.Scale(midFrame,
-             from_=tempo_range[0],
-             to= tempo_range[1],
-             orient=tk.HORIZONTAL,
-             length=defaults['scale_length'],
-             showvalue=0,
-             troughcolor = theme_colors['scale_through'],
-             bd = 0,
-             activebackground = theme_colors['text'],
-             bg = theme_colors['label_bg'],
-             sliderlength = 30,
-             font=(theme_fonts[0]),
-             variable=scale_var,
-             command=update)
+scale = tk.Scale(midFrame, from_=tempo_range[0], to= tempo_range[1], orient=tk.HORIZONTAL,
+length=defaults['scale_length'], showvalue=0, troughcolor = theme_colors['scale_through'],
+bd = 0, activebackground = theme_colors['text'], bg = theme_colors['label_bg'], width = 20, sliderlength = 30,
+font=(theme_fonts[0]), variable=scale_var, command=update)
 scale.set(defaults['tempo'])
 scale.pack(side='bottom',fill='both', expand='0')
 
 #in right frame
 # click number in a measure label
-count_label =tk.Label(rightFrame, text='0', fg=theme_colors['text'], bg =theme_colors['bg'], width=3, font=(theme_fonts[0], 180, 'bold'), justify='left')
+count_label =tk.Label(rightFrame, text='0', fg=theme_colors['text'], bg =theme_colors['bg'], width=3, height = 600, font=(theme_fonts[0], 160, 'bold'), justify='left')
 count_label.pack(fill='both', expand=1)
-
 #play beats
 #time signature mode change
 def update_time_signature(*args):
